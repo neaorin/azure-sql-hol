@@ -24,13 +24,15 @@ After the secondary is created and seeded, data begins replicating from the prim
 > 
 
 1. In the [Azure portal](http://portal.azure.com), browse to the database that you want to set up for geo-replication.
-2. On the SQL database page, select **geo-replication**, and then select the region to create the secondary database. You can select any region other than the region hosting the primary database, but we recommend the [paired region](../best-practices-availability-paired-regions.md).
+2. On the SQL database page, select **geo-replication**, and then select the region to create the secondary database. You can select any region other than the region hosting the primary database, but we recommend the [paired region](../best-practices-availability-paired-regions.md). For this tutorial, select **South Central US** as the region for the secondary database.
+
    
     ![Configure geo-replication](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/sql-database/media/sql-database-geo-replication-portal/configure-geo-replication.png)
-3. Select or configure the server and pricing tier for the secondary database.
+
+3. Select or configure the server and pricing tier for the secondary database. For this tutorial, use the name **sqlholgeo[XX]**.
    
     ![Configure secondary](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/sql-database/media/sql-database-geo-replication-portal/create-secondary.png)
-4. Optionally, you can add a secondary database to an elastic pool. To create the secondary database in a pool, click **elastic pool** and select a pool on the target server. A pool must already exist on the target server. This workflow does not create a pool.
+
 5. Click **Create** to add the secondary.
 6. The secondary database is created and the seeding process begins.
    
@@ -39,7 +41,21 @@ After the secondary is created and seeded, data begins replicating from the prim
    
     ![Seeding complete](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/sql-database/media/sql-database-geo-replication-portal/seeding-complete.png)
 
-## Initiate a failover
+8. You can optionally connect to the secondary database and verify that it responds to read-only queries.
+
+For example, this query will complete successfully on the secondary replica:
+
+```sql
+select top 1 * from Person.Person
+```
+
+However, this query will fail as the database is read-only:
+
+```sql
+update Person.Person set MiddleName = 'K' where BusinessEntityID = 1
+```
+
+## Initiate a failover (optional)
 
 The secondary database can be switched to become the primary.  
 
@@ -59,13 +75,3 @@ There is a short period during which both databases are unavailable (on the orde
 > 
 > 
 
-## Remove secondary database
-This operation permanently terminates the replication to the secondary database, and changes the role of the secondary to a regular read-write database. If the connectivity to the secondary database is broken, the command succeeds but the secondary does not become read-write until after connectivity is restored.  
-
-1. In the [Azure portal](http://portal.azure.com), browse to the primary database in the geo-replication partnership.
-2. On the SQL database page, select **geo-replication**.
-3. In the **SECONDARIES** list, select the database you want to remove from the geo-replication partnership.
-4. Click **Stop Replication**.
-   
-    ![Remove secondary](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/sql-database/media/sql-database-geo-replication-portal/remove-secondary.png)
-5. A confirmation window opens. Click **Yes** to remove the database from the geo-replication partnership. (Set it to a read-write database not part of any replication.)

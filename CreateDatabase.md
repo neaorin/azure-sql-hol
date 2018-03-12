@@ -20,9 +20,9 @@ Follow these steps to create an empty SQL database.
 
    | Setting       | Suggested value | Description |
    | ------------ | ------------------ | ------------------------------------------------- |
-   | **Database name** | AdventureWorks | For valid database names, see [Database Identifiers](https://docs.microsoft.com/sql/relational-databases/databases/database-identifiers). |
+   | **Database name** | **AdventureWorks[XX]** | For valid database names, see [Database Identifiers](https://docs.microsoft.com/sql/relational-databases/databases/database-identifiers). |
    | **Subscription** | Your subscription  | For details about your subscriptions, see [Subscriptions](https://account.windowsazure.com/Subscriptions). |
-   | **Resource group**  | sqlhol | For valid resource group names, see [Naming rules and restrictions](https://docs.microsoft.com/azure/architecture/best-practices/naming-conventions). |
+   | **Resource group**  | **sqlhol[XX]** | For valid resource group names, see [Naming rules and restrictions](https://docs.microsoft.com/azure/architecture/best-practices/naming-conventions). |
    | **Select source** | Blank database | Creates an empty database. |
 
    > [!IMPORTANT]
@@ -33,12 +33,12 @@ Follow these steps to create an empty SQL database.
 
    | Setting       | Suggested value | Description |
    | ------------ | ------------------ | ------------------------------------------------- |
-   | **Server name** | Any globally unique name | For valid server names, see [Naming rules and restrictions](https://docs.microsoft.com/azure/architecture/best-practices/naming-conventions). |
+   | **Server name** | **sqlhol[XX]** | For valid server names, see [Naming rules and restrictions](https://docs.microsoft.com/azure/architecture/best-practices/naming-conventions). |
    | **Server admin login** | Any valid name | For valid login names, see [Database Identifiers](https://docs.microsoft.com/sql/relational-databases/databases/database-identifiers). |
    | **Password** | Any valid password | Your password must have at least 8 characters and must contain characters from three of the following categories: upper case characters, lower case characters, numbers, and non-alphanumeric characters. |
    | **Subscription** | Your subscription | For details about your subscriptions, see [Subscriptions](https://account.windowsazure.com/Subscriptions). |
-   | **Resource group** | sqlhol | For valid resource group names, see [Naming rules and restrictions](https://docs.microsoft.com/azure/architecture/best-practices/naming-conventions). |
-   | **Location** | Any valid location | For information about regions, see [Azure Regions](https://azure.microsoft.com/regions/). |
+   | **Resource group** | **sqlhol[XX]** | For valid resource group names, see [Naming rules and restrictions](https://docs.microsoft.com/azure/architecture/best-practices/naming-conventions). |
+   | **Location** | **East US** | For information about regions, see [Azure Regions](https://azure.microsoft.com/regions/). |
 
    > [!IMPORTANT]
    > The server admin login and password that you specify here are required to log in to the server and its databases later in this quick start. Remember or record this information for later use.
@@ -65,6 +65,9 @@ Follow these steps to create an empty SQL database.
      ![notification](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/sql-database/media/sql-database-get-started-portal/notification.png)
 
 ## Create a server-level firewall rule
+
+> [!NOTE]
+> You do NOT need to create a firewall rule if you are using SQL Server Management Studio from within an Azure Virtual Machine to connect to the database, and you left the *Allow Azure services to access server* option selected during the database create screen.
 
 The SQL Database service creates a firewall at the server-level that prevents external applications and tools from connecting to the server or any databases on the server unless a firewall rule is created to open the firewall for specific IP addresses. Follow these steps to create a [SQL Database server-level firewall rule](sql-database-firewall-configure.md) for your client's IP address and enable external connectivity through the SQL Database firewall for your IP address only.
 
@@ -100,7 +103,7 @@ Now that you have created a sample database in Azure, let’s use the built-in q
 
 2. Select SQL server authentication, provide the required login information, and then click **OK** to log in.
 
-3. After you are authenticated as **ServerAdmin**, type the following query in the query editor pane.
+3. After you are authenticated as admin, type the following query in the query editor pane.
 
 ```sql
 SELECT @@VERSION
@@ -108,5 +111,19 @@ SELECT @@VERSION
 
 4. Click **Run** and then review the query results in the **Results** pane.
 
-5. Close the **Query editor** page, click **OK** to discard your unsaved edits.
+## Create another user with limited rights
 
+Some sections of this workshop require the existence of a user which is not database owner, but will have data reading rights. Let's create this user right now.
+
+1. Connect to the **AdventureWorks** database, using either the built-in portal query tool as above, or by using **SQL Server Management Studio**. 
+
+2. If you used **SQL Server Management Studio**, after you are authenticated as admin, switch to the **AdventureWorks** database.
+
+3. Type the following query in the query editor pane.
+
+```sql
+CREATE USER Mary WITH PASSWORD = 'SomePassword234%^&';
+ALTER ROLE db_datareader ADD MEMBER Mary; 
+```
+
+3. Make sure the query has successfully completed.

@@ -6,6 +6,9 @@ Before you can migrate data from an on-premises SQL Server instance to Azure SQL
 [Data Migration Assistant (DMA)](https://docs.microsoft.com/en-us/sql/dma/dma-overview) enables you to upgrade to a modern data platform by detecting compatibility issues that can impact database functionality on your new version of SQL Server. It recommends performance and reliability improvements for your target environment. It allows you to not only move your schema and data, but also uncontained objects from your source server to your target server.
 
 > [!NOTE]
+> There is a list of SQL Server features which are not supported in Azure SQL Database, available at [**Feature comparison: Azure SQL Database versus SQL Server**](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-features).
+
+> [!NOTE]
 > If you don't have DMA installed, [click here](https://www.microsoft.com/en-us/download/details.aspx?id=53595) to download and install it.
 
 1.	In the Data Migration Assistant, select the New (+) icon, and then select the **Assessment**  project type.
@@ -67,20 +70,9 @@ To migrate the **AdventureWorks2012** schema to Azure SQL Database, perform the 
 
     ![Deploy Schema](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/dms/media/tutorial-sql-server-to-azure-sql/dma-schema-deploy.png)
 
-## Register the Microsoft.DataMigration resource provider
-1. Log in to the Azure portal, select **All services**, and then select **Subscriptions**.
- 
-   ![Show portal subscriptions](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/dms/media/tutorial-sql-server-to-azure-sql/portal-select-subscription.png)
-       
-2. Select the subscription in which you want to create the instance of the Azure Database Migration Service, and then select **Resource providers**.
- 
-    ![Show resource providers](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/dms/media/tutorial-sql-server-to-azure-sql/portal-select-resource-provider.png)    
-3.  Search for migration, and then to the right of **Microsoft.DataMigration**, select **Register**.
- 
-    ![Register resource provider](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/dms/media/tutorial-sql-server-to-azure-sql/portal-register-resource-provider.png)    
 
+## Migrate the data using the Azure Database Migration Service
 
-## Create an instance
 1.	In the Azure portal, select **+ Create a resource**, search for Azure Database Migration Service, and then select **Azure Database Migration Service** from the drop-down list.
 
     ![Azure Marketplace](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/dms/media/tutorial-sql-server-to-azure-sql/portal-marketplace.png)

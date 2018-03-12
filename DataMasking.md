@@ -39,8 +39,8 @@ The DDM recommendations engine, flags certain fields from your database as poten
    * Alternatively, you can scroll down to the **Operations** section and click **Dynamic Data Masking**.
      
      ![Navigation pane](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/sql-database/media/sql-database-dynamic-data-masking-get-started/4_ddm_settings_tile.png)<br/><br/>
-4. In the **Dynamic Data Masking** configuration page, you may see some database columns that the recommendations engine has flagged for masking. In order to accept the recommendations, just click **Add Mask** for one or more columns and a mask is created based on the default type for this column. You can change the masking function by clicking on the masking rule and editing the masking field format to a different format of your choice. Be sure to click **Save** to save your settings.
-   
+4. In the **Dynamic Data Masking** configuration page, you may see some database columns that the recommendations engine has flagged for masking. In order to accept the recommendations, just click **Add Mask** for one or more columns and a mask is created based on the default type for this column. You can change the masking function by clicking on the masking rule and editing the masking field format to a different format of your choice. Be sure to click **Save** to save your settings. 
+  
     ![Navigation pane](https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/master/articles/sql-database/media/sql-database-dynamic-data-masking-get-started/5_ddm_recommendations.png)<br/><br/>
 5. To add a mask for any column in your database, at the top of the **Dynamic Data Masking** configuration page, click **Add Mask** to open the **Add Masking Rule** configuration page.
    
@@ -59,6 +59,22 @@ The DDM recommendations engine, flags certain fields from your database as poten
    > 
    > 
 10. Click **Save** in the data masking configuration page to save the new or updated masking policy.
+
+11. Now you can test the masking rules, by connecting with the unprivileged user you created during the [Create an Azure SQL database](CreateDatabase.md) part of this workshop. You can login to the server with the user **Mary**, and run a SELECT query on the masked columns.
+
+   > [!NOTE]
+   > If you're getting a *Login Failed for user 'Mary'* when trying to login via SSMS, you need to select the **Connection Properties** tab and enter the name of the database you're trying to connect to.
+   > 
+   ![ConnectTo](./media/connecttodb.jpg)
+
+For instance, suppose you chose to mask the **EmailAddress** column from the **Person.EmailAddress** table. The query below will return masked values when executed as Mary, but will return the unmasked values when run as your admin user:
+
+```sql
+select * from Person.EmailAddress
+```
+
+![DataMasking](./media/datamasking.jpg)
+
 
 
 

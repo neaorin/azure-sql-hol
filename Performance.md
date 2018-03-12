@@ -130,60 +130,6 @@ If you want to know more or apply advisor recommendation, click the icon. It wil
 It’s possible, that because of zoom level, annotations that are close to each other will get collapsed into one. This will be represented by special icon, clicking it will open new blade where list of grouped annotations will be shown.
 Correlating queries and performance tuning actions can help to better understand your workload. 
 
-## Optimizing the Query Store configuration for Query Performance Insight
-During your use of Query Performance Insight, you might encounter the following Query Store messages:
-
-* "Query Store is not properly configured on this database. Click here to learn more."
-* "Query Store is not properly configured on this database. Click here to change settings." 
-
-These messages usually appear when Query Store is not able to collect new data. 
-
-First case happens when Query Store is in Read-Only state and parameters are set optimally. You can fix this by increasing size of Query Store or clearing Query Store.
-
-![qds button][8]
-
-Second case happens when Query Store is Off or parameters aren’t set optimally. <br>You can change the Retention and Capture policy and enable Query Store by executing commands below or directly from portal:
-
-![qds button][9]
-
-### Recommended retention and capture policy
-There are two types of retention policies:
-
-* Size based - if set to AUTO it will clean data automatically when near max size is reached.
-* Time based - by default we will set it to 30 days, which means, if Query Store will run out of space, it will delete query information older than 30 days
-
-Capture policy could be set to:
-
-* **All** - Captures all queries.
-* **Auto** - Infrequent queries and queries with insignificant compile and execution duration are ignored. Thresholds for execution count, compile and runtime duration are internally determined. This is the default option.
-* **None** - Query Store stops capturing new queries, however runtime stats for already captured queries are still collected.
-
-We recommend setting all policies to AUTO and clean policy to 30 days:
-
-    ALTER DATABASE [YourDB] 
-    SET QUERY_STORE (SIZE_BASED_CLEANUP_MODE = AUTO);
-
-    ALTER DATABASE [YourDB] 
-    SET QUERY_STORE (CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30));
-
-    ALTER DATABASE [YourDB] 
-    SET QUERY_STORE (QUERY_CAPTURE_MODE = AUTO);
-
-Increase size of Query Store. This could be performed by connecting to a database and issuing following query:
-
-    ALTER DATABASE [YourDB]
-    SET QUERY_STORE (MAX_STORAGE_SIZE_MB = 1024);
-
-Applying these settings will eventually make Query Store collecting new queries, however if you don’t want to wait you can clear Query Store. 
-
-> [!NOTE]
-> Executing following query will delete all current information in the Query Store. 
-> 
-> 
-
-    ALTER DATABASE [YourDB] SET QUERY_STORE CLEAR;
-
-
 ## Summary
 Query Performance Insight helps you understand the impact of your query workload and how it relates to database resource consumption. With this feature, you will learn about the top consuming queries, and easily identify the ones to fix before they become a problem.
 

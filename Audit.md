@@ -17,10 +17,7 @@ You can use SQL database auditing to:
 You can configure auditing for different types of event categories, as explained in the [Set up auditing for your database](#subheading-2) section.
 
 > [!IMPORTANT]
-> Audit logs are written to **Append Blobs** in an Azure Blob storage on your Azure subscription.
->
-> * **Premium Storage** is currently **not supported** by Append Blobs.
-> * **Storage in VNet** is currently **not supported**.
+> Audit logs are written to **Append Blobs** in an Azure Blob storage on your Azure subscription. 
 
 ## <a id="subheading-8"></a>Define server-level vs. database-level auditing policy
 
@@ -90,7 +87,11 @@ There are several methods you can use to view blob auditing logs:
 
        ![Navigation pane][8]
 
-* Use the system function **sys.fn_get_audit_file** (T-SQL) to return the audit log data in tabular format. For more information on using this function, see the [sys.fn_get_audit_file documentation](https://docs.microsoft.com/sql/relational-databases/system-functions/sys-fn-get-audit-file-transact-sql).
+* Use the system function **sys.fn_get_audit_file** (T-SQL) to return the audit log data in tabular format. For more information on using this function, see the [sys.fn_get_audit_file documentation](https://docs.microsoft.com/sql/relational-databases/system-functions/sys-fn-get-audit-file-transact-sql). Below is a sample query which is reading the data from Azure Blob Storage:
+
+```sql
+SELECT TOP 20 * FROM sys.fn_get_audit_file ('https://demoazuresqlaudit.blob.core.windows.net/sqldbauditlogs/sqlhol-sorin/AdventureWorks/SqlDbAuditing_Audit/2018-03-12/16_52_07_372_0.xel',default,default);
+```
 
 
 * Use **Merge Audit Files** in SQL Server Management Studio (starting with SSMS 17):
