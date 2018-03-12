@@ -29,3 +29,4 @@ This hands-on lab contains the following topics:
 10. [Vulnerability Assessment with Azure SQL Database](VulnerabilityAssessment.md)
 11. [Threat Detection with Azure SQL Database](ThreatDetection.md)
 12. [Transparent Data Encryption](TDE.md)
+13. [Automatic Tuning](Autotuning.md)
