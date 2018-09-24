@@ -8,7 +8,7 @@ Log in to the [Azure portal](https://portal.azure.com/).
 
 An Azure SQL database is created with a defined set of [compute and storage resources](sql-database-service-tiers.md). The database is created within an [Azure resource group](../azure-resource-manager/resource-group-overview.md) and in an [Azure SQL Database logical server](sql-database-features.md).
 
-Follow these steps to create an empty SQL database.
+Follow these steps to create a SQL database.
 
 1. Click **Create a resource** in the upper left-hand corner of the Azure portal.
 
@@ -23,11 +23,13 @@ Follow these steps to create an empty SQL database.
    | **Database name** | **AdventureWorks[XX]** | For valid database names, see [Database Identifiers](https://docs.microsoft.com/sql/relational-databases/databases/database-identifiers). |
    | **Subscription** | Your subscription  | For details about your subscriptions, see [Subscriptions](https://account.windowsazure.com/Subscriptions). |
    | **Resource group**  | **sqllab[XX]** | For valid resource group names, see [Naming rules and restrictions](https://docs.microsoft.com/azure/architecture/best-practices/naming-conventions). |
-   | **Select source** | Blank database | Creates an empty database. |
+   | **Select source** | (see below) |  |
 
    > [!IMPORTANT]
-   > You must select the Blank database on this form. You will migrate a database from SQL Server in the next steps.
-   >
+   
+   > If you intend to also perfom a lift-and-shift database migration (Lab 2. [Migrate Your On-premises Database to Azure](MigrateDatabase.md), you must select the **Blank database** on this form. 
+
+   > If you intend to start with a pre-populated atabase in the cloud, you must select **Sample (AdventureWorksLT)** on this form.
 
 4. Under **Server**, click **Configure required settings** and fill out the SQL server (logical server) form with the following information, as shown on the following image:   
 
@@ -66,10 +68,7 @@ Follow these steps to create an empty SQL database.
 
 ## Create a server-level firewall rule
 
-> [!NOTE]
-> You do NOT need to create a firewall rule if you are using SQL Server Management Studio from within an Azure Virtual Machine to connect to the database, and you left the *Allow Azure services to access server* option selected during the database create screen.
-
-The SQL Database service creates a firewall at the server-level that prevents external applications and tools from connecting to the server or any databases on the server unless a firewall rule is created to open the firewall for specific IP addresses. Follow these steps to create a [SQL Database server-level firewall rule](sql-database-firewall-configure.md) for your client's IP address and enable external connectivity through the SQL Database firewall for your IP address only.
+The SQL Database service creates a firewall at the server-level that prevents external applications and tools from connecting to the server or any databases on the server unless a firewall rule is created to open the firewall for specific IP addresses. Follow these steps to create a [SQL Database server-level firewall rule](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-get-started-portal-firewall) for your client's IP address and enable external connectivity through the SQL Database firewall for your IP address only.
 
 > [!NOTE]
 > SQL Database communicates over port 1433. If you are trying to connect from within a corporate network, outbound traffic over port 1433 may not be allowed by your network's firewall. If so, you cannot connect to your Azure SQL Database server unless your IT department opens port 1433.
@@ -110,20 +109,3 @@ SELECT @@VERSION
 ```
 
 4. Click **Run** and then review the query results in the **Results** pane.
-
-## Create another user with limited rights
-
-Some sections of this workshop require the existence of a user which is not database owner, but will have data reading rights. Let's create this user right now.
-
-1. Connect to the **AdventureWorks** database, using either the built-in portal query tool as above, or by using **SQL Server Management Studio**. 
-
-2. If you used **SQL Server Management Studio**, after you are authenticated as admin, switch to the **AdventureWorks** database.
-
-3. Type the following query in the query editor pane.
-
-```sql
-CREATE USER Mary WITH PASSWORD = 'SomePassword234%^&';
-ALTER ROLE db_datareader ADD MEMBER Mary; 
-```
-
-3. Make sure the query has successfully completed.

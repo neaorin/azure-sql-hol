@@ -53,7 +53,10 @@ The following section describes the configuration of auditing using the Azure po
     If server blob auditing is enabled, the database-configured audit will exist side by side with the server blob audit.
 
     ![Navigation pane][3]
-5. To open the **Audit Logs Storage** blade, select **Storage Details**. Select the Azure storage account where logs will be saved, and then select the retention period. The old logs will be deleted. Then click **OK**.
+5. To open the **Audit Logs Storage** blade, select **Storage Details**. Create a new Azure storage account where logs will be saved, and then select the retention period. The old logs will be deleted. Then click **OK**.
+
+    > NOTE: For this lab, make sure to CREATE a new storage account to hold your audit data. Do not use any existing storage accounts. You can name your new storage account **sqlstore[XX]**.
+
    >[!TIP]
    >To get the most out of the auditing reports templates, use the same storage account for all audited databases.
 
@@ -90,7 +93,7 @@ There are several methods you can use to view blob auditing logs:
 * Use the system function **sys.fn_get_audit_file** (T-SQL) to return the audit log data in tabular format. For more information on using this function, see the [sys.fn_get_audit_file documentation](https://docs.microsoft.com/sql/relational-databases/system-functions/sys-fn-get-audit-file-transact-sql). Below is a sample query which is reading the data from Azure Blob Storage:
 
 ```sql
-SELECT TOP 20 * FROM sys.fn_get_audit_file ('https://demoazuresqlaudit.blob.core.windows.net/sqldbauditlogs/sqlhol-sorin/AdventureWorks/SqlDbAuditing_Audit/2018-03-12/16_52_07_372_0.xel',default,default);
+SELECT TOP 20 * FROM sys.fn_get_audit_file ('https://sqlholadmstore.blob.core.windows.net/sqldbauditlogs/sqlholadm/AdventureWorksAdm/',default,default);
 ```
 
 
@@ -100,6 +103,9 @@ SELECT TOP 20 * FROM sys.fn_get_audit_file ('https://demoazuresqlaudit.blob.core
         ![Navigation pane][9]
     2. The **Add Audit Files** dialog box opens. Select one of the **Add** options to
      choose whether to merge audit files from a local disk or import them from Azure Storage. You are required to provide your Azure Storage details and account key.
+
+   >[!TIP]
+   >You can find your storage account name and key by navigating to the storage account in the Azure portal, then clicking **Access keys**.
 
     3. After all files to merge have been added, click **OK** to complete the merge operation.
 

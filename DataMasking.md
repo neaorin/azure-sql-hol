@@ -67,16 +67,10 @@ The DDM recommendations engine, flags certain fields from your database as poten
    > 
    ![ConnectTo](./media/connecttodb.jpg)
 
-For instance, suppose you chose to mask the **EmailAddress** column from the **Person.EmailAddress** table. The query below will return masked values when executed as Mary, but will return the unmasked values when run as your admin user:
+For instance, suppose you chose to mask the **EmailAddress** column from the **Customer** table. The query below will return masked values when executed as *Mary*, but will return the unmasked values when run as your admin user:
 
 ```sql
-select * from Person.EmailAddress
+select * from SalesLT.Customer
 ```
 
 ![DataMasking](./media/datamasking.jpg)
-
-
-
-
-
-
