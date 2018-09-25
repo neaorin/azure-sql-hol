@@ -40,4 +40,5 @@ This hands-on lab contains the following topics:
 14. [Reduce data exposure with Dynamic Data Masking](DataMasking.md)
 15. [Limit access to data with Row-Level Security](RLS.md)
 16. [Client-side encryption with Always Encrypted](AE.md)
+17. [Track historical data with Temporal Tables](Temporal.md)
 ---
